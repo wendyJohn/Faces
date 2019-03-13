@@ -45,9 +45,29 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/title_icon" />
+
+            <com.romainpiel.shimmer.ShimmerTextView
+                android:id="@+id/shimmer_tv"
+                android:text="救援一公里      安全无小事"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#A9A9A9"
+                android:typeface="serif"
+                android:textSize="50sp"/>
+
+
         </LinearLayout>
+
+        <com.example.juicekaaa.fireserver.utils.SecureView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="80dp"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"

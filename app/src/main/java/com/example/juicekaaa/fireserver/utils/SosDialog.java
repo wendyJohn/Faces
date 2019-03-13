@@ -113,16 +113,19 @@ public class SosDialog extends Dialog implements View.OnClickListener {
 
     // 一键求救
     private void CryForHelp() {
-        if (lat == 0.0 && lng == 0.0) {
-           SVProgressHUD.showErrorWithStatus(context,"获取位置信息失败，请重新获取");
-        } else if ("".equals(name.getText().toString().trim()) || "".equals(phone.getText().toString().trim()) || "".equals(identitycrad.getText().toString().trim()) || name.getText().toString().trim() == null || phone.getText().toString().trim() == null || identitycrad.getText().toString().trim() == null
+
+//        if (lat == 0.0 && lng == 0.0) {
+//           SVProgressHUD.showErrorWithStatus(context,"获取位置信息失败，请重新获取");
+//        } else
+
+            if ("".equals(name.getText().toString().trim()) || "".equals(phone.getText().toString().trim()) || "".equals(identitycrad.getText().toString().trim()) || name.getText().toString().trim() == null || phone.getText().toString().trim() == null || identitycrad.getText().toString().trim() == null
                 ||"".equals(type)||type==null) {
             Toast.makeText(context,"请填写完求救信息！",Toast.LENGTH_SHORT).show();
         } else {
             dismiss();
             RequestParams params = new RequestParams();
-            params.put("lat", lat + "");
-            params.put("lng", lng + "");
+            params.put("lat", "31.874744");
+            params.put("lng", "118.833842");
             params.put("name", name.getText().toString().trim());
             params.put("phone", phone.getText().toString().trim());
             params.put("identitycrad", identitycrad.getText().toString().trim());

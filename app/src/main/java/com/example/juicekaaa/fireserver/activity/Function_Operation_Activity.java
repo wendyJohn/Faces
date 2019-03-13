@@ -3,13 +3,13 @@ package com.example.juicekaaa.fireserver.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
@@ -19,10 +19,10 @@ import com.example.juicekaaa.fireserver.entity.DoorOrder;
 import com.example.juicekaaa.fireserver.entity.Group;
 import com.example.juicekaaa.fireserver.net.Acquisition_materials;
 import com.example.juicekaaa.fireserver.net.ArchitectureBean;
-import com.example.juicekaaa.fireserver.ui.OpenDoorActivity;
 import com.example.juicekaaa.fireserver.ui.RgbVideoIdentityActivity;
 import com.example.juicekaaa.fireserver.utils.CommonUtil;
 import com.example.juicekaaa.fireserver.utils.MessageEvent;
+import com.example.juicekaaa.fireserver.utils.PayPasswordView;
 import com.example.juicekaaa.fireserver.utils.SVProgressHUD;
 import com.example.juicekaaa.fireserver.utils.SosDialog;
 
@@ -46,6 +46,7 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
     List<CheckBox> mycheckBoxes; // 多选组
     private TextView back;
     private TextView confirm_opening;
+    private TextView confirm_openings;
     private TextView One_key_door;
     private TextView material;
     private TextView opendoor;
@@ -69,6 +70,7 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
     ListView g_listview;
     private MaterialAdapter materialAdapter;
     private String[] items;
+    private BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
         ButterKnife.bind(this);
         back = findViewById(R.id.back);
         confirm_opening = findViewById(R.id.confirm_opening);
+        confirm_openings = findViewById(R.id.confirm_openings);
         One_key_door = findViewById(R.id.One_key_door);
         material = findViewById(R.id.material);
         opendoor = findViewById(R.id.opendoor);
@@ -98,6 +101,7 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
         back.setOnClickListener(this);
         One_key_door.setOnClickListener(this);
         confirm_opening.setOnClickListener(this);
+        confirm_openings.setOnClickListener(this);
         material.setOnClickListener(this);
         opendoor.setOnClickListener(this);
         sos.setOnClickListener(this);
@@ -156,6 +160,12 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
                 materialAdapter = new MaterialAdapter(Function_Operation_Activity.this, g_list);
                 g_listview.setAdapter(materialAdapter);
                 break;
+            case MyApplication.MESSAGE_DISMISS://返回
+                bottomSheetDialog.dismiss();
+                break;
+            case MyApplication.MESSAGE_BACK://返回
+                bottomSheetDialog.dismiss();
+                break;
         }
     }
 
@@ -177,7 +187,7 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
             case R.id.back:
                 finish();
                 break;
-            //确定开门
+            //人脸开门
             case R.id.confirm_opening:
                 if (checkedValues == null || "".equals(checkedValues)) {
                     SVProgressHUD.showErrorWithStatus(Function_Operation_Activity.this, "请选择相应要开的柜门！");
@@ -187,15 +197,27 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
                     intent_confirm_opening.putExtra("group_id", items[0]);
                     startActivityForResult(intent_confirm_opening,0x99);
                     stopTimer();
+
+                }
+                break;
+            //密码开门
+            case R.id.confirm_openings:
+                if (checkedValues == null || "".equals(checkedValues)) {
+                    SVProgressHUD.showErrorWithStatus(Function_Operation_Activity.this, "请选择相应要开的柜门！");
+                } else {
+                    openPayPasswordDialog(checkedValues);//临时用
                 }
                 break;
             //一键开门
             case R.id.One_key_door:
+//                openPayPasswordDialog("A,B,C,D,E,F,G");//临时用
+
                 Intent intent_One_key_door = new Intent(this, RgbVideoIdentityActivity.class);
                 intent_One_key_door.putExtra("checkedValues","A,B,C,D,E,F,G");
                 intent_One_key_door.putExtra("group_id", items[0]);
                 startActivityForResult(intent_One_key_door,0x99);
                 stopTimer();
+
                 break;
             //物资
             case R.id.material:
@@ -241,12 +263,11 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
         // RESULT_OK，判断另外一个activity已经结束数据输入功能，Standard activity result:
         if (resultCode == 0x99) {
             String mycheckedValues = data.getStringExtra("checkedValues");
-
             //数值
             doorlist = new ArrayList();
             String[] split = mycheckedValues.split(",");
             for (int i = 0; i < split.length; i++) {
-                doorlist.add(split[i]);
+                doorlist.add(split[i].trim());
             }
             try {
                 DoorOrder.getInstance().init(doorlist,Function_Operation_Activity.this);
@@ -261,5 +282,14 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
     protected void onDestroy() {
         super.onDestroy();
         stopTimer();
+    }
+
+    //密码输入验证开门
+    private void openPayPasswordDialog(String checkedValues) {
+        PayPasswordView payPasswordView = new PayPasswordView(this, checkedValues);
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(payPasswordView);
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
+        bottomSheetDialog.show();
     }
 }

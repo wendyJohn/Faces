@@ -12,7 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
+import com.example.juicekaaa.fireserver.activity.Function_Operation_Activity;
+import com.example.juicekaaa.fireserver.entity.DoorOrder;
+import com.example.juicekaaa.fireserver.net.Acquisition_materials;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PayPasswordView extends LinearLayout implements View.OnClickListener, PasswordEditText.PasswordFullListener {
     private LinearLayout mKeyBoardView;
@@ -22,18 +31,21 @@ public class PayPasswordView extends LinearLayout implements View.OnClickListene
     private static final String BROADCAST_DISMISS_DISC = "com.permissions.MYD_BROADCAST";
     private static final String BROADCAST_ACTION_DISMISS = "com.permissions.myd_broadcast";
     private Context context;
+    String checkedValues;
+    private List<String> doorlist;//选中柜门的参数数组
 
-    public PayPasswordView(Context context) {
-        this(context, null);
+    public PayPasswordView(Context context,String checkedValues) {
+        this(context, checkedValues,null);
         this.context = context;
+        this.checkedValues = checkedValues;
     }
 
-    public PayPasswordView(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    public PayPasswordView(Context context, String checkedValues,@Nullable AttributeSet attrs) {
+        this(context,checkedValues, attrs, 0);
     }
 
-    public PayPasswordView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public PayPasswordView(Context context,String checkedValues, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context,attrs, defStyleAttr);
         inflate(context, R.layout.pay_password_layout, this);
         mKeyBoardView = findViewById(R.id.keyboard);
         mPasswordEditText = findViewById(R.id.passwordEdt);
@@ -77,9 +89,31 @@ public class PayPasswordView extends LinearLayout implements View.OnClickListene
 
     @Override
     public void passwordFull(String password) {
-        if (password.equals("357246")) {
-            Intent myintent = new Intent(BROADCAST_ACTION_PASS);
-            context.sendBroadcast(myintent, BROADCAST_PASS_DISC);
+        if (password.equals("000000")) {
+
+//            Intent myintent = new Intent(BROADCAST_ACTION_PASS);
+//            context.sendBroadcast(myintent, BROADCAST_PASS_DISC);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MessageEvent messageEvent = new MessageEvent(MyApplication.MESSAGE_BACK);
+                    EventBus.getDefault().post(messageEvent);
+                }
+            }).start();
+
+            //数值
+            doorlist = new ArrayList();
+            String[] split = checkedValues.split(",");
+            for (int i = 0; i < split.length; i++) {
+                doorlist.add(split[i].trim());
+            }
+            try {
+                DoorOrder.getInstance().init(doorlist,context);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         } else {
             Toast.makeText(getContext(), "密码错误", Toast.LENGTH_SHORT).show();
         }

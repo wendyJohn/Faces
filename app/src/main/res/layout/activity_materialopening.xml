@@ -83,10 +83,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none"
                     android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="none" />
 
                 <CheckBox
                     android:id="@+id/c_checkboxs"
@@ -121,10 +121,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none"
                     android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="none" />
 
                 <CheckBox
                     android:id="@+id/e_checkboxs"
@@ -167,11 +167,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="none" />
 
                 <CheckBox
                     android:id="@+id/b_checkboxs"
@@ -205,11 +205,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="none" />
 
                 <CheckBox
                     android:id="@+id/d_checkboxs"
@@ -244,10 +244,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none"
                     android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="none" />
 
                 <CheckBox
                     android:id="@+id/f_checkboxs"
@@ -286,10 +286,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:fadeScrollbars="false"
-            android:scrollbars="none"
             android:layout_marginRight="180dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:fadeScrollbars="false"
+            android:scrollbars="none" />
 
         <CheckBox
             android:id="@+id/g_checkboxs"
@@ -323,22 +323,42 @@
             android:textColor="#3be0ef"
             android:textSize="30sp" />
 
-
-        <TextView
-            android:id="@+id/confirm_opening"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/select_door"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"
-            android:text="确定开门"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/confirm_openings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/select_door"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="密码开门"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/confirm_opening"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/select_door"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="人脸开门"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/One_key_door"

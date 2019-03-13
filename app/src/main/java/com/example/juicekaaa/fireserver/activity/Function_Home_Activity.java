@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,8 @@ import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
 import com.example.juicekaaa.fireserver.utils.FullVideoView;
 import com.example.juicekaaa.fireserver.utils.SosDialog;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
 
 import java.io.File;
 
@@ -33,6 +36,8 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     private TextView funtion_sos;
     private TextView funtion_propaganda;
     private TextView online_help;
+    private ShimmerTextView myShimmerTextView;
+    private Shimmer shimmer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
 
     //初始化
     private void intiView() {
+        myShimmerTextView = findViewById(R.id.shimmer_tv);
         videos = findViewById(R.id.videos);
         funtion_material = findViewById(R.id.funtion_material);
         funtion_opendoor = findViewById(R.id.funtion_opendoor);
@@ -68,6 +74,8 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     protected void onResume() {
         hideBottomUIMenu();
         setVideo();
+        shimmer = new Shimmer();
+        shimmer.start(myShimmerTextView);
         super.onResume();
     }
 
@@ -94,6 +102,7 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 stopTimer();
+                shimmer.cancel();
                 Intent i = new Intent(Function_Home_Activity.this, MainActivity.class);
                 startActivity(i);
                 finish();
@@ -107,15 +116,17 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             //物资
             case R.id.funtion_material:
+                stopTimer();
+                shimmer.cancel();
                 Intent funtion_material = new Intent(Function_Home_Activity.this, Function_Operation_Activity.class);
                 startActivity(funtion_material);
-                stopTimer();
                 break;
             //开门
             case R.id.funtion_opendoor:
+                stopTimer();
+                shimmer.cancel();
                 Intent funtion_opendoor = new Intent(Function_Home_Activity.this, Function_Operation_Activity.class);
                 startActivity(funtion_opendoor);
-                stopTimer();
                 break;
             //SOS
             case R.id.funtion_sos:
@@ -128,13 +139,27 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
                 break;
             //在线帮助
             case R.id.online_help:
+                stopTimer();
+                shimmer.cancel();
                 Intent funtion_help = new Intent(Function_Home_Activity.this, Function_help_Activity.class);
                 startActivity(funtion_help);
-                stopTimer();
                 break;
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        return;//在按返回键时的操作
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
     /**
      * 隐藏虚拟按键，并且全屏
      */
@@ -157,6 +182,7 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     protected void onDestroy() {
         super.onDestroy();
         stopTimer();
+        shimmer.cancel();
     }
 
 

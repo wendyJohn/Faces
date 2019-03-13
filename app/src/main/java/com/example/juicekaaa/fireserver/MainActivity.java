@@ -17,9 +17,6 @@ import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.Toast;
 
-//import com.bjw.bean.ComBean;
-//import com.bjw.utils.FuncUtil;
-//import com.bjw.utils.SerialHelper;
 import com.example.juicekaaa.fireserver.activity.Function_Home_Activity;
 import com.example.juicekaaa.fireserver.api.FaceApi;
 import com.example.juicekaaa.fireserver.broadcast.Receiver;
@@ -33,10 +30,9 @@ import com.example.juicekaaa.fireserver.utils.FullVideoView;
 import com.example.juicekaaa.fireserver.utils.GlideImageLoader;
 import com.example.juicekaaa.fireserver.utils.GlobalSet;
 import com.example.juicekaaa.fireserver.utils.MessageEvent;
-import com.example.juicekaaa.fireserver.utils.PayPasswordView;
 import com.example.juicekaaa.fireserver.utils.PreferencesUtil;
-import com.example.juicekaaa.fireserver.utils.VideoUtil;
 import com.example.juicekaaa.fireserver.utils.SerialUtils;
+import com.example.juicekaaa.fireserver.utils.VideoUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -51,6 +47,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+//import com.bjw.bean.ComBean;
+//import com.bjw.utils.FuncUtil;
+//import com.bjw.utils.SerialHelper;
 
 
 public class MainActivity extends AppCompatActivity implements OnBannerListener {
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
     private void initView() {
         serial = new SerialUtils();
         try {
-//            serial.openSerialPort();
+            serial.openSerialPort();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -313,22 +313,6 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
         registerReceiver(receiverd, intentd, MyApplication.BROADCAST_VIDEO_DISC, null);
 
     }
-
-
-    //密码输入退出程序
-    private void openPayPasswordDialog() {
-        PayPasswordView payPasswordView = new PayPasswordView(this);
-        bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(payPasswordView);
-        bottomSheetDialog.setCanceledOnTouchOutside(false);
-        bottomSheetDialog.show();
-    }
-
-
-//            case R.id.signout:
-//                openPayPasswordDialog();
-//                break;
-
 
     /**
      * 轮播监听

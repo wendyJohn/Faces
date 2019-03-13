@@ -48,28 +48,36 @@ public class DoorOrder {
             switch (order) {
                 case "A":
                     sendA();
+                    Thread.sleep(1000);
                     break;
                 case "B":
                     sendB();
+                    Thread.sleep(1000);
                     break;
                 case "C":
                     sendC();
+                    Thread.sleep(1000);
                     break;
                 case "D":
                     sendD();
+                    Thread.sleep(1000);
                     break;
                 case "E":
                     sendE();
+                    Thread.sleep(1000);
                     break;
                 case "F":
                     sendF();
+                    Thread.sleep(1000);
                     break;
                 case "G":
                     sendG();
+                    Thread.sleep(1000);
                     break;
                 default:
                     sendAll();
                     break;
+
             }
         }
 
@@ -79,18 +87,19 @@ public class DoorOrder {
     private void sendAll() throws InterruptedException {
         if (serial.isOpen()) {
             serial.sendHex(OPENA);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             serial.sendHex(OPENB);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             serial.sendHex(OPENC);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             serial.sendHex(OPEND);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             serial.sendHex(OPENE);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             serial.sendHex(OPENF);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             serial.sendHex(OPENG);
+            Thread.sleep(1000);
             Toast.makeText(context, "全部门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
@@ -100,8 +109,8 @@ public class DoorOrder {
 
     public void sendA() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "A门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPENA);
+            Toast.makeText(context, "A门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }
@@ -109,8 +118,8 @@ public class DoorOrder {
 
     public void sendB() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "B门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPENB);
+            Toast.makeText(context, "B门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }
@@ -119,8 +128,8 @@ public class DoorOrder {
 
     public void sendC() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "C门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPENC);
+            Toast.makeText(context, "C门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }
@@ -129,8 +138,8 @@ public class DoorOrder {
 
     public void sendD() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "D门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPEND);
+            Toast.makeText(context, "D门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }
@@ -139,8 +148,8 @@ public class DoorOrder {
 
     public void sendE() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "E门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPENE);
+            Toast.makeText(context, "E门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }
@@ -149,8 +158,8 @@ public class DoorOrder {
 
     public void sendF() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "F门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPENF);
+            Toast.makeText(context, "F门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }
@@ -159,8 +168,8 @@ public class DoorOrder {
 
     public void sendG() {
         if (serial.isOpen()) {
-            Toast.makeText(context, "G门已打开", Toast.LENGTH_SHORT).show();
             serial.sendHex(OPENG);
+            Toast.makeText(context, "G门已打开", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
         }

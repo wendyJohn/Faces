@@ -81,5 +81,6 @@ dependencies {
     implementation files('libs/online_liantian_3-1-6-3-381_0808.jar')
     implementation files('libs/pos(d)_jar_v3.9.jar')
 
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+    implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
+
 }

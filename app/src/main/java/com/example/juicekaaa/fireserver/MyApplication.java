@@ -3,6 +3,7 @@ package com.example.juicekaaa.fireserver;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.juicekaaa.fireserver.utils.CrashUtil;
 import com.example.juicekaaa.fireserver.utils.GetMac;
 
 import cn.jpush.android.api.JPushInterface;
@@ -24,6 +25,7 @@ public class MyApplication extends Application {
     public static final int MESSAGE_BANNER = 0x756499;
     public static final int MESSAGE_MATERIAL = 0x756466;
     public static final int TCP_BACK_DATA = 0x213;
+    public static final int MESSAGE_BACK = 0x2199;
     public static String MAC = "";
 
     public static boolean isFirst;
@@ -50,6 +52,11 @@ public class MyApplication extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         isFirst = true;
+
+        //报错日志监听
+        CrashUtil crashUtil = CrashUtil.getInstance();
+        crashUtil.init(this);
+
     }
 
     public static String getMac() {

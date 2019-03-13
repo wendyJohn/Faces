@@ -193,7 +193,7 @@
                     android:button="@null"
                     android:layout_marginRight="10dp"
                     android:drawableLeft="@drawable/radio_button_state"
-                    android:text="火警"
+                    android:text="火灾"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     />
