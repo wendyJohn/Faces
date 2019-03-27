@@ -1,25 +1,34 @@
 package com.example.juicekaaa.fireserver.activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.aip.api.FaceApi;
+import com.baidu.aip.db.DBManager;
+import com.baidu.aip.entity.Group;
+import com.baidu.aip.utils.GlobalSet;
+import com.baidu.aip.utils.PreferencesUtil;
 import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
 import com.example.juicekaaa.fireserver.adapter.MaterialAdapter;
-import com.example.juicekaaa.fireserver.api.FaceApi;
 import com.example.juicekaaa.fireserver.entity.DoorOrder;
-import com.example.juicekaaa.fireserver.entity.Group;
+import com.example.juicekaaa.fireserver.face.activity.LivenessSettingActivity;
+import com.example.juicekaaa.fireserver.face.activity.OrbbecProVideoIdentifyActivity;
+import com.example.juicekaaa.fireserver.face.activity.RgbVideoIdentityActivity;
 import com.example.juicekaaa.fireserver.net.Acquisition_materials;
 import com.example.juicekaaa.fireserver.net.ArchitectureBean;
-import com.example.juicekaaa.fireserver.ui.RgbVideoIdentityActivity;
 import com.example.juicekaaa.fireserver.utils.CommonUtil;
 import com.example.juicekaaa.fireserver.utils.MessageEvent;
 import com.example.juicekaaa.fireserver.utils.PayPasswordView;
@@ -69,27 +78,28 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
     @BindView(R.id.g_listview)
     ListView g_listview;
     private MaterialAdapter materialAdapter;
-    private String[] items;
     private BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getSupportActionBar().hide();
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //隐藏虚拟按键
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_materialopening);
-        EventBus.getDefault().register(this);
         intiView();
+
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_materialopening;
     }
 
     //初始化
     private void intiView() {
+        // 使用人脸1：n时使用
+        DBManager.getInstance().init(this);
+        livnessTypeTip();
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         back = findViewById(R.id.back);
         confirm_opening = findViewById(R.id.confirm_opening);
         confirm_openings = findViewById(R.id.confirm_openings);
@@ -107,6 +117,10 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
         sos.setOnClickListener(this);
         propaganda.setOnClickListener(this);
         List<Group> groupList = FaceApi.getInstance().getGroupList(0, 1000);
+        if (groupList.size() <= 0) {
+            Toast.makeText(this, "还没有分组，请创建分组并添加用户", Toast.LENGTH_SHORT).show();
+            return;
+        }
         items = new String[groupList.size()];
         for (int i = 0; i < groupList.size(); i++) {
             Group group = groupList.get(i);
@@ -165,6 +179,17 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
                 break;
             case MyApplication.MESSAGE_BACK://返回
                 bottomSheetDialog.dismiss();
+                //数值
+                doorlist = new ArrayList();
+                String[] split = checkedValues.split(",");
+                for (int i = 0; i < split.length; i++) {
+                    doorlist.add(split[i].trim());
+                }
+                try {
+                    DoorOrder.getInstance().init(doorlist, context);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
@@ -192,12 +217,17 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
                 if (checkedValues == null || "".equals(checkedValues)) {
                     SVProgressHUD.showErrorWithStatus(Function_Operation_Activity.this, "请选择相应要开的柜门！");
                 } else {
-                    Intent intent_confirm_opening = new Intent(Function_Operation_Activity.this, RgbVideoIdentityActivity.class);
-                    intent_confirm_opening.putExtra("checkedValues",checkedValues);
-                    intent_confirm_opening.putExtra("group_id", items[0]);
-                    startActivityForResult(intent_confirm_opening,0x99);
-                    stopTimer();
+//                    Intent intent_confirm_opening = new Intent(Function_Operation_Activity.this, OrbbecProVideoIdentifyActivity.class);
+//                    intent_confirm_opening.putExtra("checkedValues",checkedValues);
+//                    intent_confirm_opening.putExtra("group_id", items[0]);
+//                    startActivityForResult(intent_confirm_opening,0x99);
 
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager
+                            .PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+                        return;
+                    }
+                    showSingleAlertDialog("OpenTheDoor");
                 }
                 break;
             //密码开门
@@ -211,12 +241,17 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
             //一键开门
             case R.id.One_key_door:
 //                openPayPasswordDialog("A,B,C,D,E,F,G");//临时用
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager
+                        .PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+                    return;
+                }
+                showSingleAlertDialog("OneKeyDoor");
 
-                Intent intent_One_key_door = new Intent(this, RgbVideoIdentityActivity.class);
-                intent_One_key_door.putExtra("checkedValues","A,B,C,D,E,F,G");
-                intent_One_key_door.putExtra("group_id", items[0]);
-                startActivityForResult(intent_One_key_door,0x99);
-                stopTimer();
+//                Intent intent_One_key_door = new Intent(this, OrbbecProVideoIdentifyActivity.class);
+//                intent_One_key_door.putExtra("checkedValues","A,B,C,D,E,F,G");
+//                intent_One_key_door.putExtra("group_id", items[0]);
+//                startActivityForResult(intent_One_key_door,0x99);
 
                 break;
             //物资
@@ -270,7 +305,7 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
                 doorlist.add(split[i].trim());
             }
             try {
-                DoorOrder.getInstance().init(doorlist,Function_Operation_Activity.this);
+                DoorOrder.getInstance().init(doorlist, Function_Operation_Activity.this);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -281,7 +316,6 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopTimer();
     }
 
     //密码输入验证开门
@@ -291,5 +325,101 @@ public class Function_Operation_Activity extends BaseActivity implements View.On
         bottomSheetDialog.setContentView(payPasswordView);
         bottomSheetDialog.setCanceledOnTouchOutside(false);
         bottomSheetDialog.show();
+    }
+
+
+    //    private AlertDialog alertDialog;
+    private String[] items;
+
+    public void showSingleAlertDialog(String type) {
+
+        List<Group> groupList = FaceApi.getInstance().getGroupList(0, 1000);
+        if (groupList.size() <= 0) {
+            Toast.makeText(this, "还没有分组，请创建分组并添加用户", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        items = new String[groupList.size()];
+        for (int i = 0; i < groupList.size(); i++) {
+            Group group = groupList.get(i);
+            items[i] = group.getGroupId();
+        }
+        choiceIdentityType(items[0], type);
+
+//        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+//        alertBuilder.setTitle("请选择分组groupID");
+//        alertBuilder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface arg0, int index) {
+//                Toast.makeText(Function_Operation_Activity.this, items[index], Toast.LENGTH_SHORT).show();
+//                choiceIdentityType(items[index]);
+//                alertDialog.dismiss();
+//            }
+//        });
+//
+//        alertDialog = alertBuilder.create();
+//        alertDialog.show();
+    }
+
+    private void choiceIdentityType(String groupId, String mytype) {
+        int type = PreferencesUtil.getInt(LivenessSettingActivity.TYPE_LIVENSS, LivenessSettingActivity
+                .TYPE_NO_LIVENSS);
+        if (type == LivenessSettingActivity.TYPE_NO_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：无活体", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Function_Operation_Activity.this, RgbVideoIdentityActivity.class);
+            intent.putExtra("group_id", groupId);
+            startActivity(intent);
+        } else if (type == LivenessSettingActivity.TYPE_RGB_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：单目RGB活体", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Function_Operation_Activity.this, RgbVideoIdentityActivity.class);
+            intent.putExtra("group_id", groupId);
+            startActivity(intent);
+        } else if (type == LivenessSettingActivity.TYPE_RGB_DEPTH_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：双目RGB+Depth活体", Toast.LENGTH_LONG).show();
+            int cameraType = PreferencesUtil.getInt(GlobalSet.TYPE_CAMERA, GlobalSet.ORBBEC);
+            Intent intent = null;
+            if (cameraType == GlobalSet.ORBBECPRO) {
+                intent = new Intent(Function_Operation_Activity.this, OrbbecProVideoIdentifyActivity.class);
+            } else if (cameraType == GlobalSet.ORBBECPROS1) {
+                intent = new Intent(Function_Operation_Activity.this, OrbbecProVideoIdentifyActivity.class);
+            } else if (cameraType == GlobalSet.ORBBECPRODABAI) {
+                intent = new Intent(Function_Operation_Activity.this, OrbbecProVideoIdentifyActivity.class);
+            } else if (cameraType == GlobalSet.ORBBECPRODEEYEA) {
+                intent = new Intent(Function_Operation_Activity.this, OrbbecProVideoIdentifyActivity.class);
+            } else if (cameraType == GlobalSet.ORBBECATLAS) {
+                intent = new Intent(Function_Operation_Activity.this, OrbbecProVideoIdentifyActivity.class);
+            }
+            if (intent != null) {
+                if (mytype.equals("OneKeyDoor")) {
+                    intent.putExtra("group_id", groupId);
+                    intent.putExtra("checkedValues", "A,B,C,D,E,F,G");
+                    startActivityForResult(intent, 0x99);
+                } else {
+                    intent.putExtra("group_id", groupId);
+                    intent.putExtra("checkedValues", checkedValues);
+                    startActivityForResult(intent, 0x99);
+                }
+
+            }
+        }
+    }
+
+    private void livnessTypeTip() {
+        try {
+            int type = PreferencesUtil.getInt(LivenessSettingActivity.TYPE_LIVENSS, LivenessSettingActivity
+                    .TYPE_NO_LIVENSS);
+            if (type == LivenessSettingActivity.TYPE_NO_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：无活体, 请选用普通USB摄像头", Toast.LENGTH_LONG).show();
+            } else if (type == LivenessSettingActivity.TYPE_RGB_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：单目RGB活体, 请选用普通USB摄像头", Toast.LENGTH_LONG).show();
+            } else if (type == LivenessSettingActivity.TYPE_RGB_IR_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：双目RGB+IR活体, 请选用RGB+IR摄像头",
+//                    Toast.LENGTH_LONG).show();
+            } else if (type == LivenessSettingActivity.TYPE_RGB_DEPTH_LIVENSS) {
+//            Toast.makeText(this, "当前活体策略：双目RGB+Depth活体，请选用RGB+Depth摄像头", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

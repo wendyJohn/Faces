@@ -225,6 +225,21 @@ public class TCPManager {
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "接收总控数据异常");
+//                        //发现数据接收异常，重启Socket
+//                        stopSocket();
+//                        new Thread() {
+//                            @Override
+//                            public void run() {
+//                                super.run();
+//                                try {
+//                                    Thread.sleep(5000);//休眠5秒
+//                                    releaseSocket();//重启Socket
+//                                } catch (InterruptedException e1) {
+//                                    e1.printStackTrace();
+//                                }
+//                            }
+//                        }.start();
+
                     }
                 }
 

@@ -5,13 +5,17 @@ android {
     defaultConfig {
         applicationId "com.example.juicekaaa.fireserver"
         minSdkVersion 18
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        ndk { //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+//        ndk { //选择要添加的对应cpu类型的.so库。
+//            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+//        }
+
+        ndk {
+            abiFilters "armeabi"
         }
         manifestPlaceholders = [JPUSH_PKGNAME: applicationId,
                                 JPUSH_APPKEY : "3ab48d6fb5783a4ea16bfb2f",  //JPush上注册的包名对应的
@@ -75,12 +79,11 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation files('libs/baidu_license.jar')
-    implementation files('libs/FaceSDK_2.0.0.jar')
     implementation files('libs/IdCard.jar')
-    implementation files('libs/online_liantian_3-1-6-3-381_0808.jar')
     implementation files('libs/pos(d)_jar_v3.9.jar')
-
     implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
-
+    api project(path: ':facelibrary')
+    api project(path: ':orbbec')
+    implementation files('libs/Serialport-module.jar')
+    implementation 'com.wang.avi:library:2.1.3'
 }

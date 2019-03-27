@@ -9,14 +9,10 @@ import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.juicekaaa.fireserver.MainActivity;
-import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
 import com.example.juicekaaa.fireserver.utils.FullVideoView;
 import com.example.juicekaaa.fireserver.utils.SosDialog;
@@ -42,15 +38,13 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getSupportActionBar().hide();
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //隐藏虚拟按键
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.funtion_home_activity);
         intiView();
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.funtion_home_activity;
     }
 
     //初始化
@@ -101,7 +95,6 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
         videos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                stopTimer();
                 shimmer.cancel();
                 Intent i = new Intent(Function_Home_Activity.this, MainActivity.class);
                 startActivity(i);
@@ -116,14 +109,12 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             //物资
             case R.id.funtion_material:
-                stopTimer();
                 shimmer.cancel();
                 Intent funtion_material = new Intent(Function_Home_Activity.this, Function_Operation_Activity.class);
                 startActivity(funtion_material);
                 break;
             //开门
             case R.id.funtion_opendoor:
-                stopTimer();
                 shimmer.cancel();
                 Intent funtion_opendoor = new Intent(Function_Home_Activity.this, Function_Operation_Activity.class);
                 startActivity(funtion_opendoor);
@@ -139,7 +130,6 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
                 break;
             //在线帮助
             case R.id.online_help:
-                stopTimer();
                 shimmer.cancel();
                 Intent funtion_help = new Intent(Function_Home_Activity.this, Function_help_Activity.class);
                 startActivity(funtion_help);
@@ -181,7 +171,6 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopTimer();
         shimmer.cancel();
     }
 

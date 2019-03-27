@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!--6.0以上需要手动添加权限设置 -->
@@ -110,18 +109,23 @@
 
         <service android:name=".service.MyService" />
 
-        <activity android:name=".ui.OpenDoorActivity" />
-        <activity android:name=".ui.BatchImportActivity" />
-        <activity android:name=".ui.AddGroupActivity" />
-        <activity android:name=".ui.GroupListActivity" />
-        <activity android:name=".ui.RgbVideoIdentityActivity" />
-        <activity android:name=".ui.RgbVideoMatchImageActivity" />
-        <activity android:name=".ui.RegActivity" />
-        <activity android:name=".ui.UserListActivity" />
-        <activity android:name=".ui.UserActivity" />
-        <activity android:name=".ui.RgbDetectActivity" />
-        <activity android:name=".ui.UserGroupManagerActivity" />
-        <activity android:name=".ui.IDcardRegActivity" />
+        <activity android:name=".face.activity.MainsActivity"/>
+        <activity
+            android:name=".face.activity.RgbVideoIdentityActivity"
+            android:hardwareAccelerated="true"/>
+        <activity android:name=".face.activity.UserGroupManagerActivity"/>
+        <activity android:name=".face.activity.RegActivity"/>
+        <activity android:name=".face.activity.RgbDetectActivity"/>
+        <activity android:name=".face.activity.AddGroupActivity"/>
+        <activity android:name=".face.activity.GroupListActivity"/>
+        <activity android:name=".face.activity.UserListActivity"/>
+        <activity android:name=".face.activity.UserActivity"/>
+        <activity android:name=".face.activity.BatchImportActivity"/>
+        <activity android:name=".face.activity.LivenessSettingActivity"/>
+        <activity android:name=".face.activity.FeatureSettingActivity"/>
+        <activity android:name=".face.activity.OrbbecProLivenessDetectActivity"/>
+        <activity android:name=".face.activity.OrbbecProVideoIdentifyActivity"/>
+        <activity android:name=".face.activity.FacePreviewImageSetActivity"></activity>
 
         <service
             android:name="com.synjones.idcard.RemoteDecodeService"

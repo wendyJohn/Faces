@@ -1,14 +1,21 @@
 package com.example.juicekaaa.fireserver;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,20 +24,18 @@ import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.Toast;
 
+import com.baidu.aip.api.FaceApi;
+import com.baidu.aip.db.DBManager;
+import com.baidu.aip.entity.Group;
+import com.baidu.aip.manager.FaceSDKManager;
 import com.example.juicekaaa.fireserver.activity.Function_Home_Activity;
-import com.example.juicekaaa.fireserver.api.FaceApi;
 import com.example.juicekaaa.fireserver.broadcast.Receiver;
-import com.example.juicekaaa.fireserver.db.DBManager;
-import com.example.juicekaaa.fireserver.entity.Group;
-import com.example.juicekaaa.fireserver.manager.FaceSDKManager;
 import com.example.juicekaaa.fireserver.net.Advertisement;
 import com.example.juicekaaa.fireserver.service.MyService;
 import com.example.juicekaaa.fireserver.tcp.TCPManager;
 import com.example.juicekaaa.fireserver.utils.FullVideoView;
 import com.example.juicekaaa.fireserver.utils.GlideImageLoader;
-import com.example.juicekaaa.fireserver.utils.GlobalSet;
 import com.example.juicekaaa.fireserver.utils.MessageEvent;
-import com.example.juicekaaa.fireserver.utils.PreferencesUtil;
 import com.example.juicekaaa.fireserver.utils.SerialUtils;
 import com.example.juicekaaa.fireserver.utils.VideoUtil;
 import com.youth.banner.Banner;
@@ -43,7 +48,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,55 +90,67 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
-        videoUtil = new VideoUtil(this, video);
-        myApplication = new MyApplication();
-        if (myApplication.isFirst) {
-            myApplication.setIsFirst(false);
-            initFace();
-            Intent startIntent = new Intent(this, MyService.class);
-            startService(startIntent);
-            //强制加入一个分组
-            List<Group> groupList = FaceApi.getInstance().getGroupList(0, 1000);
-            if (groupList.size() < 1) {
-                Group group = new Group();
-                group.setGroupId("SLKJ");
-                FaceApi.getInstance().groupAdd(group);
-            }
-        }
-        initView();
-        //广播注册
-        RegisteredBroadcasting();
+
+//        myApplication = new MyApplication();
+//        if (myApplication.isFirst) {
+//            myApplication.setIsFirst(false);
+//            initFaceeSDK();
+//            Intent startIntent = new Intent(this, MyService.class);
+//            startService(startIntent);
+//
+//            Group group = new Group();
+//            group.setGroupId("GNG");
+//            boolean ret = FaceApi.getInstance().groupAdd(group);
+//            Toast.makeText(this, "默認添加" + (ret ? "成功" : "失败"), Toast.LENGTH_SHORT).show();
+//        }
+
+        initFaceeSDK();//初始化人脸
+        addGroup();//强制添加分组
+        startService(); //判断服务是否开启
+        initView();//初始化
+        RegisteredBroadcasting(); //广播注册
+        checkPermission();//7.0以上添加存储与相机的权限
     }
 
-    private void initFace() {
-        PreferencesUtil.initPrefs(this);
-        // 使用人脸1：n时使用
-        DBManager.getInstance().init(this);
-        //单目RGB活体, 请选用普通USB摄像头
-        PreferencesUtil.putInt(GlobalSet.TYPE_LIVENSS, GlobalSet.TYPE_RGB_LIVENSS);
-        //生活照
-        PreferencesUtil.putInt(GlobalSet.TYPE_MODEL, GlobalSet.RECOGNIZE_LIVE);
+    public void startService() {
+        boolean isServiceRunning = false;
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("com.example.juicekaaa.fireserver.service.MyService".equals(service.service.getClassName())) {
+                Log.v("qs", "isServiceRunning = true");
+                isServiceRunning = true;
+            }
+        }
+        if (!isServiceRunning) {
+            Intent startIntent = new Intent(this, MyService.class);
+            startService(startIntent);
+        } else {
+            Log.v("qs", "service alreay start");
+        }
+    }
+
+    private void initFaceeSDK() {
         FaceSDKManager.getInstance().init(this, new FaceSDKManager.SdkInitListener() {
             @Override
             public void initStart() {
-//                toast("开始初始化SDK");
+
             }
 
             @Override
             public void initSuccess() {
-//                toast("SDK初始化成功");
+
             }
 
             @Override
             public void initFail(int errorCode, String msg) {
-//                toast("SDK初始化失败:" + msg);
+
             }
         });
     }
-
 
     /**
      * 播放视频广告
@@ -140,12 +160,10 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //加载图片
-                Advertisement.addImage();
+                Advertisement.addImage(); //加载图片
             }
         }).start();
-        //加载本地視頻
-        videoPlayback();
+        videoPlayback(); //加载本地視頻
         hideBottomUIMenu();
         super.onResume();
     }
@@ -154,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
      * 初始化
      */
     private void initView() {
+        videoUtil = new VideoUtil(this, video);
         serial = new SerialUtils();
         try {
             serial.openSerialPort();
@@ -189,10 +208,10 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
                 String order = messageEvent.getMessage();
                 order = order.replaceAll(" ", "");
                 if (serial.isOpen()) {
-                    Toast.makeText(this, "开门成功", Toast.LENGTH_SHORT).show();
+                    System.out.println("===========开门成功================");
                     serial.sendHex(order);
                 } else {
-                    Toast.makeText(this, "串口没打开", Toast.LENGTH_SHORT).show();
+                    System.out.println("===========串口没打开================");
                 }
                 break;
             case MyApplication.MESSAGE:// 关闭提示框，播放本地视频
@@ -367,5 +386,49 @@ public class MainActivity extends AppCompatActivity implements OnBannerListener 
         unregisterReceiver(receiverd);
     }
 
+    public void checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissionStrs = new ArrayList<>();
+            int hasWriteSdcardPermission = ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteSdcardPermission != PackageManager.PERMISSION_GRANTED) {
+                permissionStrs.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            int hasCameraPermission = ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CAMERA);
+            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                permissionStrs.add(android.Manifest.permission.CAMERA);
+            }
+            String[] stringArray = permissionStrs.toArray(new String[0]);
+            if (permissionStrs.size() > 0) {
+                requestPermissions(stringArray, MyApplication.REQUEST_CODE_ASK_PERMISSIONS);
+                return;
+            }
+        }
+    }
+
+    //权限设置后的回调函数，判断相应设置，requestPermissions传入的参数为几个权限，则permissions和grantResults为对应权限和设置结果
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MyApplication.REQUEST_CODE_ASK_PERMISSIONS:
+                //可以遍历每个权限设置情况
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //这里写你需要相关权限的操作
+                } else {
+                    Toast.makeText(MainActivity.this, "权限没有开启", Toast.LENGTH_SHORT).show();
+                }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    //强制添加一个分组
+    private void addGroup(){
+        // 使用人脸1：n时使用
+        DBManager.getInstance().init(this);
+        String groupId = "ok";
+        Group group = new Group();
+        group.setGroupId(groupId);
+        boolean ret = FaceApi.getInstance().groupAdd(group);
+        System.out.println("=============="+"添加" + (ret ? "成功" : "失败"));
+    }
 
 }

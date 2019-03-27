@@ -100,9 +100,10 @@ public class DoorOrder {
             Thread.sleep(1000);
             serial.sendHex(OPENG);
             Thread.sleep(1000);
-            Toast.makeText(context, "全部门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "全部门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========全部门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
     }
 
@@ -110,18 +111,20 @@ public class DoorOrder {
     public void sendA() {
         if (serial.isOpen()) {
             serial.sendHex(OPENA);
-            Toast.makeText(context, "A门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "A门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========A门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
     }
 
     public void sendB() {
         if (serial.isOpen()) {
             serial.sendHex(OPENB);
-            Toast.makeText(context, "B门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "B门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========B门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
 
     }
@@ -129,9 +132,10 @@ public class DoorOrder {
     public void sendC() {
         if (serial.isOpen()) {
             serial.sendHex(OPENC);
-            Toast.makeText(context, "C门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "C门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========C门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
 
     }
@@ -139,9 +143,10 @@ public class DoorOrder {
     public void sendD() {
         if (serial.isOpen()) {
             serial.sendHex(OPEND);
-            Toast.makeText(context, "D门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "D门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========D门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
 
     }
@@ -149,9 +154,10 @@ public class DoorOrder {
     public void sendE() {
         if (serial.isOpen()) {
             serial.sendHex(OPENE);
-            Toast.makeText(context, "E门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "E门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========E门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
 
     }
@@ -159,9 +165,10 @@ public class DoorOrder {
     public void sendF() {
         if (serial.isOpen()) {
             serial.sendHex(OPENF);
-            Toast.makeText(context, "F门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "F门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========F门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
 
     }
@@ -169,9 +176,10 @@ public class DoorOrder {
     public void sendG() {
         if (serial.isOpen()) {
             serial.sendHex(OPENG);
-            Toast.makeText(context, "G门已打开", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "G门已打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========G门已打开================");
         } else {
-            Toast.makeText(context, "串口没打开", Toast.LENGTH_SHORT).show();
+            System.out.println("===========串口没打开================");
         }
     }
 }

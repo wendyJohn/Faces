@@ -22,7 +22,7 @@ public class MyService extends Service {
         super.onCreate();
 //        getMac();
         initSeceive();
-//        Log.e(TAG, MAC);
+
     }
 
     @Override

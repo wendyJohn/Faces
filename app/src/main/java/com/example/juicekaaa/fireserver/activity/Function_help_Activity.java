@@ -10,15 +10,12 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.juicekaaa.fireserver.R;
-import com.example.juicekaaa.fireserver.manager.FaceSDKManager;
-import com.example.juicekaaa.fireserver.ui.UserGroupManagerActivity;
+import com.example.juicekaaa.fireserver.face.activity.MainsActivity;
 
 /**
  * 在线帮助界面
@@ -40,15 +37,13 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getSupportActionBar().hide();
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //隐藏虚拟按键
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_help);
         intiView();
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_help;
     }
 
     //初始化
@@ -132,7 +127,6 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopTimer();
     }
 
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -163,22 +157,22 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
                         return;
                     }
-                    FaceSDKManager.getInstance().showActivation(new FaceSDKManager.SdkInitListener() {
-                        @Override
-                        public void initStart() {
-                            toast("开始初始化SDK");
-                        }
-
-                        @Override
-                        public void initSuccess() {
-                            toast("SDK初始化成功");
-                        }
-
-                        @Override
-                        public void initFail(int errorCode, String msg) {
-                            toast("SDK初始化失败:" + msg);
-                        }
-                    });
+//                    FaceSDKManager.getInstance().showActivation(new FaceSDKManager.SdkInitListener() {
+//                        @Override
+//                        public void initStart() {
+//                            toast("开始初始化SDK");
+//                        }
+//
+//                        @Override
+//                        public void initSuccess() {
+//                            toast("SDK初始化成功");
+//                        }
+//
+//                        @Override
+//                        public void initFail(int errorCode, String msg) {
+//                            toast("SDK初始化失败:" + msg);
+//                        }
+//                    });
                     return;
                 }
                 break;
@@ -188,7 +182,7 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - DURATION)) {
                     System.out.println("您已在[" + DURATION + "]ms内连续点击【" + mHits.length + "】次了！！！");
-                    Intent intent = new Intent(this, UserGroupManagerActivity.class);
+                    Intent intent = new Intent(this, MainsActivity.class);
                     startActivity(intent);
                 }
 

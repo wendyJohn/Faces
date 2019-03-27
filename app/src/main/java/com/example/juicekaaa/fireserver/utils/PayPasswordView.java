@@ -102,18 +102,6 @@ public class PayPasswordView extends LinearLayout implements View.OnClickListene
                 }
             }).start();
 
-            //数值
-            doorlist = new ArrayList();
-            String[] split = checkedValues.split(",");
-            for (int i = 0; i < split.length; i++) {
-                doorlist.add(split[i].trim());
-            }
-            try {
-                DoorOrder.getInstance().init(doorlist,context);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
         } else {
             Toast.makeText(getContext(), "密码错误", Toast.LENGTH_SHORT).show();
         }

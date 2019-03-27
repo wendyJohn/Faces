@@ -26,6 +26,7 @@ public class MyApplication extends Application {
     public static final int MESSAGE_MATERIAL = 0x756466;
     public static final int TCP_BACK_DATA = 0x213;
     public static final int MESSAGE_BACK = 0x2199;
+    public static final int REQUEST_CODE_ASK_PERMISSIONS = 0x1231232;
     public static String MAC = "";
 
     public static boolean isFirst;
@@ -49,13 +50,13 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         achieveMac();
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
+//        JPushInterface.setDebugMode(true);
+//        JPushInterface.init(this);
         isFirst = true;
 
         //报错日志监听
-        CrashUtil crashUtil = CrashUtil.getInstance();
-        crashUtil.init(this);
+//        CrashUtil crashUtil = CrashUtil.getInstance();
+//        crashUtil.init(this);
 
     }
 
