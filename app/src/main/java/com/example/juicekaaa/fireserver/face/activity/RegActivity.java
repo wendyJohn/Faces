@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.aip.api.FaceApi;
@@ -79,7 +80,7 @@ public class RegActivity extends Activity implements View.OnClickListener {
     private FaceDetectManager detectManager;
     private List<String> groupIds = new ArrayList<>();
     private String groupId = "";
-
+    private TextView back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,11 +94,18 @@ public class RegActivity extends Activity implements View.OnClickListener {
         autoDetectBtn = (Button) findViewById(R.id.auto_detect_btn);
         fromAlbumButton = (Button) findViewById(R.id.pick_from_album_btn);
         submitButton = (Button) findViewById(R.id.submit_btn);
+        back = findViewById(R.id.back);
         submitButton.setVisibility(View.GONE);
 
         autoDetectBtn.setOnClickListener(this);
         fromAlbumButton.setOnClickListener(this);
         submitButton.setOnClickListener(this);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         groupIdSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -314,23 +322,24 @@ public class RegActivity extends Activity implements View.OnClickListener {
             Toast.makeText(RegActivity.this, "userid不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        Pattern pattern = Pattern.compile("^[0-9a-zA-Z_-]{1,}$");
-        Matcher matcher = pattern.matcher(username);
-        if (!matcher.matches()) {
-            Toast.makeText(RegActivity.this, "userid由数字、字母、下划线中的一个或者多个组合", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
+//        Pattern pattern = Pattern.compile("^[0-9a-zA-Z_-]{1,}$");
+//        Matcher matcher = pattern.matcher(username);
+//        if (!matcher.matches()) {
+//            Toast.makeText(RegActivity.this, "userid由数字、字母、下划线中的一个或者多个组合", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
         // final String groupId = groupIdEt.getText().toString().trim();
         if (TextUtils.isEmpty(groupId)) {
             Toast.makeText(RegActivity.this, "分组groupId为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        matcher = pattern.matcher(username);
-        if (!matcher.matches()) {
-            Toast.makeText(RegActivity.this, "groupId由数字、字母、下划线中的一个或者多个组合", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        matcher = pattern.matcher(username);
+//        if (!matcher.matches()) {
+//            Toast.makeText(RegActivity.this, "groupId由数字、字母、下划线中的一个或者多个组合", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         /*
          * 用户id（由数字、字母、下划线组成），长度限制128B
          * uid为用户的id,百度对uid不做限制和处理，应该与您的帐号系统中的用户id对应。

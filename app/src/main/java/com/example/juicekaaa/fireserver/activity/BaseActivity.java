@@ -14,11 +14,18 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.juicekaaa.fireserver.MainActivity;
+import com.example.juicekaaa.fireserver.R;
+import com.example.juicekaaa.fireserver.data.SDBHelper;
+import com.example.juicekaaa.fireserver.net.URLs;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     public CountDownTimer countDownTimer;
-    private long advertisingTime = 300 * 1000;//无操作时跳转首页时间
+    private long advertisingTime = 300* 1000;//无操作时跳转首页时间
     public Context context;
 
     @Override
@@ -72,7 +79,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() { //定时完成后的操作
                     //跳转到页面
-                    startActivity(new Intent(context, MainActivity.class));
+                    Intent intent=new Intent(context, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    finish();
                 }
             };
             countDownTimer.start();
@@ -86,6 +96,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onResume();
         //显示是启动定时
         startTime();
+
+        if (URLs.m_bCopyDB) {
+            new Thread(runnables).start();
+        }
     }
 
     @Override
@@ -104,6 +118,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //销毁时停止定时
         if (countDownTimer != null) {
             countDownTimer.cancel();
+            countDownTimer= null;
             System.out.println("=================="+"取消定时");
         }
     }
@@ -124,6 +139,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    Runnable runnables = new Runnable() {
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            String databaseFilename = SDBHelper.DB_DIRS + File.separator + "config.db";
+            InputStream is = getResources().openRawResource(R.raw.config);
+            FileOutputStream fos;
+            try {
+                fos = new FileOutputStream(databaseFilename);
+                byte[] buffer = new byte[8192];
+                int count = 0;
+
+                while ((count = is.read(buffer)) > 0) {
+                    fos.write(buffer, 0, count);
+                }
+                fos.close();
+                is.close();
+                URLs.m_bCopyDB = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 //    private Timer mTimer; // 计时器，每1秒执行一次任务
 //    private MyTimerTask mTimerTask; // 计时任务，判断是否未操作时间到达ns
 //    private long mLastActionTime; // 上一次操作时间

@@ -8,6 +8,7 @@ public class ArchitectureBean {
     private String address;
     private String channel_two;
     private String channel_one;
+    private String lack;
 
     public String getName() {
         return name;
@@ -63,5 +64,13 @@ public class ArchitectureBean {
 
     public void setChannel_one(String channel_one) {
         this.channel_one = channel_one;
+    }
+
+    public String getLack() {
+        return lack;
+    }
+
+    public void setLack(String lack) {
+        this.lack = lack;
     }
 }

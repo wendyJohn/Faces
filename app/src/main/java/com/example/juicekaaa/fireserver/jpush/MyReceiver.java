@@ -4,11 +4,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
+
+import com.example.juicekaaa.fireserver.MainActivity;
+import com.example.juicekaaa.fireserver.activity.BaseActivity;
+import com.example.juicekaaa.fireserver.utils.PreferenceUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
@@ -44,6 +52,20 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
                 String str_test = bundle.getString(JPushInterface.EXTRA_ALERT);
+                //开门权限
+                Date dt= new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String str_time = sdf.format(dt);
+                System.out.println("=======当前时间========="+str_time);
+                Calendar c = Calendar.getInstance();
+                c.setTime(dt); c.add(Calendar.MINUTE, 1);
+                //当前时间加一分
+                 Date dts = c.getTime();
+                SimpleDateFormat sdfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String str_times = sdfs.format(dts);
+                System.out.println("=======当前时间加一分钟========="+str_times);
+
+                PreferenceUtils.setString(context,"doorPermission","Open");
 
                 Intent myintent = new Intent(BROADCAST_ACTION_DISC);
                 myintent.putExtra("str_test", str_test);
@@ -105,5 +127,6 @@ public class MyReceiver extends BroadcastReceiver {
         }
         return sb.toString();
     }
+
 }
 

@@ -5,6 +5,7 @@ package com.example.juicekaaa.fireserver.face.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +23,7 @@ import android.hardware.Camera;
 import android.hardware.usb.UsbDevice;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
@@ -29,9 +31,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,8 +57,11 @@ import com.baidu.aip.utils.FileUitls;
 import com.baidu.aip.utils.GlobalSet;
 import com.baidu.aip.utils.PreferencesUtil;
 import com.baidu.idl.facesdk.model.FaceInfo;
+import com.example.juicekaaa.fireserver.MainActivity;
 import com.example.juicekaaa.fireserver.R;
+import com.example.juicekaaa.fireserver.activity.BaseActivity;
 import com.example.juicekaaa.fireserver.face.utils.GlobalFaceTypeModel;
+import com.example.juicekaaa.fireserver.utils.PreferenceUtils;
 import com.example.juicekaaa.fireserver.utils.SVProgressHUD;
 import com.orbbec.view.OpenGLView;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -70,7 +79,10 @@ import org.openni.android.OpenNIHelper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -82,7 +94,7 @@ import java.util.concurrent.TimeoutException;
  * @Description: 奥比中光Pro镜头RGB+DEPTH 视频VS人脸库
  */
 public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements OpenNIHelper.DeviceOpenListener,
-        ActivityCompat.OnRequestPermissionsResultCallback, ILivenessCallBack {
+        ActivityCompat.OnRequestPermissionsResultCallback, ILivenessCallBack, View.OnClickListener {
 
     private static final int MSG_WHAT = 5;
     private static final String MSG_KEY = "YUV";
@@ -158,11 +170,21 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
     private boolean mSurfaceCreated = false;
     private String checkedValues;
 
-    private ImageView iv ;
+    private ImageView iv;
     private AVLoadingIndicatorView avi;
+    private LinearLayout youte;
+
+    public CountDownTimer countdowntimer;
+    private long advertisingTime = 60 * 1000;//60S退出人脸识别
+    private TextView countdown;
+    private TextView back;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getSupportActionBar().hide();
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_orbbec_pro_video_identity);
         hideBottomUIMenu();
         FaceSDKManager.getInstance().getFaceLiveness().setLivenessCallBack(this);
@@ -174,7 +196,7 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         if (intent != null) {
             groupId = intent.getStringExtra("group_id");
-            checkedValues=intent.getStringExtra("checkedValues");
+            checkedValues = intent.getStringExtra("checkedValues");
         }
 
         DBManager.getInstance().init(this);
@@ -183,12 +205,12 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
     }
 
     private void findView() {
-
         textureView = findViewById(R.id.texture_view);
+        back = findViewById(R.id.back);
         textureView.setOpaque(false);
         textureView.setKeepScreenOn(true);
         mDepthGLView = (OpenGLView) findViewById(R.id.depthGlView);
-//        mRgbGLView = (OpenGLView) findViewById(R.id.rgbGlView);
+        //mRgbGLView = (OpenGLView) findViewById(R.id.rgbGlView);
         mTextureView = findViewById(R.id.camera_surface_view);
         mTextureView.getTextureView().setOpaque(false);
         mTextureView.getTextureView().setKeepScreenOn(true);
@@ -203,15 +225,21 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
         depthLivenssDurationTv = (TextView) findViewById(R.id.depth_liveness_duration_tv);
         depthLivenessScoreTv = (TextView) findViewById(R.id.depth_liveness_score_tv);
         featureDurationTv = (TextView) findViewById(R.id.feature_duration_tv);
-        register=  findViewById(R.id.register);
+        register = findViewById(R.id.register);
+
+        youte = findViewById(R.id.youte);
+        youte.setOnClickListener(OrbbecProVideoIdentifyActivity.this);
+
         mOpenNIHelper = new OpenNIHelper(this);
         mOpenNIHelper.requestDeviceOpen(this);
 
-        iv =findViewById(R.id.iv_rotate);
+        iv = findViewById(R.id.iv_rotate);
         Animation anim = AnimationUtils.loadAnimation(this,
                 R.anim.rotate_circle_anim);
         iv.startAnimation(anim);// 开始动画
-        avi= findViewById(R.id.avi);
+        avi = findViewById(R.id.avi);
+        countdown = findViewById(R.id.countdown);
+        back.setOnClickListener(this);
     }
 
 
@@ -260,6 +288,7 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
         super.onResume();
         Log.e("chaixiaogang", "onStart:");
         mHandler = new MyHandler(this);
+        startTime();
     }
 
     @Override
@@ -298,6 +327,13 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
             mOpenNIHelper.shutdown();
         }
         finish();
+
+        //当activity不在前台是停止定时
+        if (countdowntimer != null) {
+            countdowntimer.cancel();
+            System.out.println("==================" + "取消定时");
+        }
+
     }
 
     @Override
@@ -315,7 +351,6 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
         }
     }
 
-
     @Override
     public void onDestroy() {
         Log.v("chaixiaogang", "onDestroy:");
@@ -330,6 +365,13 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
             mCamera.release();
             mCamera = null;
         }
+
+        //销毁时停止定时
+        if (countdowntimer != null) {
+            countdowntimer.cancel();
+            System.out.println("==================" + "取消定时");
+        }
+
     }
 
     private void initPreview() {
@@ -397,7 +439,7 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
                 mCamera.setDisplayOrientation(90);
 //                mCamera.setDisplayOrientation(270);
                 mTextureView.setPreviewSize(mHeight, mWidth); // camera 旋转了90度需要调整宽高
-            }else {
+            } else {
                 mTextureView.setPreviewSize(mWidth, mHeight);
             }
             Camera.Parameters params = mCamera.getParameters();
@@ -424,6 +466,18 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
             }
         } catch (RuntimeException e) {
             Log.e("chaixiaogang", e.getMessage());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.youte:
+
+                break;
+            case R.id.back:
+                finish();
+                break;
         }
     }
 
@@ -561,6 +615,11 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
     @Override
     public void onDeviceOpenFailed(String msg) {
         showAlertAndExit("Open Device failed: " + msg);
+    }
+
+    @Override
+    public void onDeviceNotFound() {
+
     }
 
     void startThread() {
@@ -778,7 +837,7 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
             @Override
             public void run() {
                 if (score < 80) {
-                    register.setText("人脸未注册");
+                    register.setText("识别失败" + "\n" + "请确认是否已注册人脸识别");
                     scoreTv.setText("");
                     matchUserTv.setText("");
                     matchAvatorIv.setImageBitmap(null);
@@ -817,19 +876,24 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
                         if (file != null && file.exists()) {
                             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                             matchAvatorIv.setImageBitmap(bitmap);
-                            System.out.println("======识别成功=====");
                             avi.hide();
-                            SVProgressHUD.showSuccessWithStatus(OrbbecProVideoIdentifyActivity.this,"识别成功");
-                            //此处进行开锁
-                            new Handler().postDelayed(new Runnable() {
-                                public void run() {
-                                    // 等待2000毫秒后销毁此页面，并提示识别成功
-                                    Intent intent = new Intent();
-                                    intent.putExtra("checkedValues", checkedValues);
-                                    setResult(0x99, intent);
-                                    finish();
-                                }
-                            }, 2000);
+                            System.out.println("========人脸识别名称========" + user.getUserInfo());
+                            PreferenceUtils.setString(OrbbecProVideoIdentifyActivity.this, "FaceUserName", user.getUserInfo());
+                            if (PreferenceUtils.getString(OrbbecProVideoIdentifyActivity.this, "doorPermission").equals("Open")) {
+                                SVProgressHUD.showSuccessWithStatus(OrbbecProVideoIdentifyActivity.this, "识别成功");
+                                //此处进行开锁
+                                new Handler().postDelayed(new Runnable() {
+                                    public void run() {
+                                        // 等待2000毫秒后销毁此页面，并提示识别成功
+                                        Intent intent = new Intent();
+                                        intent.putExtra("checkedValues", checkedValues);
+                                        setResult(0x99, intent);
+                                        finish();
+                                    }
+                                }, 2000);
+                            } else {
+                                SVProgressHUD.showInfoWithStatus(OrbbecProVideoIdentifyActivity.this, "权限不够，无法开门");
+                            }
                         }
                     }
                 }
@@ -1046,6 +1110,7 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
             rectF.right = right;
         }
     }
+
     /**
      * 隐藏虚拟按键，并且全屏
      */
@@ -1062,4 +1127,46 @@ public class OrbbecProVideoIdentifyActivity extends AppCompatActivity implements
             decorView.setSystemUiVisibility(uiOptions);
         }
     }
+
+
+    /**
+     * 定时关闭人脸识别功能
+     */
+    public void startTime() {
+        if (countdowntimer == null) {
+            countdowntimer = new CountDownTimer(advertisingTime, 1000l) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (!OrbbecProVideoIdentifyActivity.this.isFinishing()) {
+                        int remainTime = (int) (millisUntilFinished / 1000L);
+                        System.out.println("=========倒计时=========" + remainTime + "秒");
+                        countdown.setText(remainTime + "秒");
+                    }
+                }
+
+                @Override
+                public void onFinish() { //定时完成后的操作
+                    finish();//关闭人脸识别
+                }
+            };
+            countdowntimer.start();
+        } else {
+            countdowntimer.start();
+        }
+    }
+
+
+    public static int getTimeCompareSize(String startTime, String endTime){ int i=0;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//年-月-日 时-分-秒
+        try { Date date1 = dateFormat.parse(startTime);//开始时间
+            Date date2 = dateFormat.parse(endTime);//结束时间
+            // 1 结束时间小于开始时间 2 开始时间与结束时间相同 3 结束时间大于开始时间
+            if (date2.getTime()<date1.getTime()){ i= 1;
+            }else if (date2.getTime()==date1.getTime()){ i= 2;
+            }else if (date2.getTime()>date1.getTime()){ //正常情况下的逻辑操作.
+                i= 3;
+            } } catch (ParseException e) { e.printStackTrace();
+        } return  i;
+    }
+
 }

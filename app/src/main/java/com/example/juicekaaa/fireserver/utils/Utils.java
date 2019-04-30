@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.util.Log;
 
@@ -285,5 +287,30 @@ public class Utils {
 
     public static ArrayList<File> listFiles(String strPath) {
         return refreshFileList(strPath);
+    }
+
+    public static int NetWork(Context context) {
+        int State = -1;
+        //获取网络工具类
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        //获取网络工作状态
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+        if (networkInfo != null) {
+            //获取网络类型
+            int type = networkInfo.getType();
+            //判断网络类型是否为WIFI
+            if (type == ConnectivityManager.TYPE_WIFI) {
+                return 1;
+            }
+            //判断网络类型是否为移动网络
+            else if (type == ConnectivityManager.TYPE_MOBILE) {
+                return 0;
+            }
+            //如果都不是返回-1
+            else {
+                return -1;
+            }
+        }
+        return State;
     }
 }

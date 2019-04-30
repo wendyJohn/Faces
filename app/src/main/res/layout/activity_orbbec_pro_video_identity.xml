@@ -9,14 +9,12 @@
         android:id="@+id/camera_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp">
+       >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp">
+           >
 
             <com.baidu.aip.face.AutoTexturePreviewView
                 android:id="@+id/camera_surface_view"
@@ -33,9 +31,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp">
+            >
 
             <com.orbbec.view.OpenGLView
                 android:id="@+id/depthGlView"
@@ -50,7 +46,9 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="30dp">
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -68,6 +66,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/homepage_disk_normal" />
+            <TextView
+                android:id="@+id/countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="倒计时"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
 
             <TextView
                 android:id="@+id/title"
@@ -98,7 +105,7 @@
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="30dp">
+      >
 
         <ImageView
             android:id="@+id/match_avator_iv"
@@ -147,15 +154,57 @@
             android:textSize="20sp" />
 
     </RelativeLayout>
-
-
     <LinearLayout
+        android:id="@+id/youte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_above="@+id/youtd"
+        >
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/signout"
+        />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/linyoutb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/youtd"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:drawableLeft="@drawable/back_icon"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="返回首页"
+            android:textColor="#3be0ef"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/youtd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -200,5 +249,6 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_red_dark" />
     </LinearLayout>
+
 </RelativeLayout>
 

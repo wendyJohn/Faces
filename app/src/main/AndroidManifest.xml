@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.juicekaaa.fireserver">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -70,16 +77,29 @@
 
         <!--功能首页 -->
         <activity
-            android:name=".activity.Function_Home_Activity"
+            android:name=".activity.FunctionHomeActivity"
+            android:screenOrientation="portrait" />
+        <!--功能首页 -->
+        <activity
+            android:name=".activity.FunctionHomesActivity"
             android:screenOrientation="portrait" />
         <!--功能操作 -->
         <activity
-            android:name=".activity.Function_Operation_Activity"
+            android:name=".activity.FunctionOperationActivity"
             android:screenOrientation="portrait" />
         <!--在线帮助 -->
         <activity
-            android:name=".activity.Function_help_Activity"
+            android:name=".activity.FunctionHelpActivity"
             android:screenOrientation="portrait" />
+        <!--历史纪录 -->
+        <activity
+            android:name=".activity.Historicalrecord_Activity"
+            android:screenOrientation="portrait" />
+        <!--消防科普 -->
+        <activity
+            android:name=".activity.PolularScienceActivity"
+            android:screenOrientation="portrait" />
+
         <!-- 替换原生极光推送接收器 -->
         <receiver
             android:name=".jpush.MyReceiver"
@@ -108,28 +128,30 @@
         </receiver>
 
         <service android:name=".service.MyService" />
+        <service android:name=".service.BackService" />
 
-        <activity android:name=".face.activity.MainsActivity"/>
+        <activity android:name=".face.activity.MainsActivity" />
         <activity
             android:name=".face.activity.RgbVideoIdentityActivity"
-            android:hardwareAccelerated="true"/>
-        <activity android:name=".face.activity.UserGroupManagerActivity"/>
-        <activity android:name=".face.activity.RegActivity"/>
-        <activity android:name=".face.activity.RgbDetectActivity"/>
-        <activity android:name=".face.activity.AddGroupActivity"/>
-        <activity android:name=".face.activity.GroupListActivity"/>
-        <activity android:name=".face.activity.UserListActivity"/>
-        <activity android:name=".face.activity.UserActivity"/>
-        <activity android:name=".face.activity.BatchImportActivity"/>
-        <activity android:name=".face.activity.LivenessSettingActivity"/>
-        <activity android:name=".face.activity.FeatureSettingActivity"/>
-        <activity android:name=".face.activity.OrbbecProLivenessDetectActivity"/>
-        <activity android:name=".face.activity.OrbbecProVideoIdentifyActivity"/>
+            android:hardwareAccelerated="true" />
+        <activity android:name=".face.activity.UserGroupManagerActivity" />
+        <activity android:name=".face.activity.RegActivity" />
+        <activity android:name=".face.activity.RgbDetectActivity" />
+        <activity android:name=".face.activity.AddGroupActivity" />
+        <activity android:name=".face.activity.GroupListActivity" />
+        <activity android:name=".face.activity.UserListActivity" />
+        <activity android:name=".face.activity.UserActivity" />
+        <activity android:name=".face.activity.BatchImportActivity" />
+        <activity android:name=".face.activity.LivenessSettingActivity" />
+        <activity android:name=".face.activity.FeatureSettingActivity" />
+        <activity android:name=".face.activity.OrbbecProLivenessDetectActivity" />
+        <activity android:name=".face.activity.OrbbecProVideoIdentifyActivity" />
         <activity android:name=".face.activity.FacePreviewImageSetActivity"></activity>
 
         <service
             android:name="com.synjones.idcard.RemoteDecodeService"
             android:process=":remote" />
+
     </application>
 
 </manifest>

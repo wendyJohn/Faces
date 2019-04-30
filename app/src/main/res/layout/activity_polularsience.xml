@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#002e66">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#002e66"
+        tools:ignore="WebViewLayout">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:layout_marginRight="10dp"
+            android:background="#002e66"
+             />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/backpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:drawablePadding="3dp"
+        android:gravity="center"
+        android:layout_above="@+id/linb"
+        android:text="回到首页"
+        android:visibility="gone"
+        android:textColor="#3be0ef"
+        android:textSize="20sp" />
+    <LinearLayout
+        android:id="@+id/linb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#002e66"
+        tools:ignore="WebViewLayout">
+
+        <WebView
+            android:id="@+id/webviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="#002e66"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/linyoutb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:drawableLeft="@drawable/back_icon"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="#3be0ef"
+            android:textSize="30sp" />
+    </RelativeLayout>
+</RelativeLayout>

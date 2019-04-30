@@ -118,20 +118,20 @@ public class SosDialog extends Dialog implements View.OnClickListener {
 //           SVProgressHUD.showErrorWithStatus(context,"获取位置信息失败，请重新获取");
 //        } else
 
-            if ("".equals(name.getText().toString().trim()) || "".equals(phone.getText().toString().trim()) || "".equals(identitycrad.getText().toString().trim()) || name.getText().toString().trim() == null || phone.getText().toString().trim() == null || identitycrad.getText().toString().trim() == null
-                ||"".equals(type)||type==null) {
-            Toast.makeText(context,"请填写完求救信息！",Toast.LENGTH_SHORT).show();
+        if ("".equals(phone.getText().toString().trim()) || phone.getText().toString().trim() == null
+                || "".equals(type) || type == null) {
+            Toast.makeText(context, "请填写完求救信息！", Toast.LENGTH_SHORT).show();
         } else {
             dismiss();
             RequestParams params = new RequestParams();
             params.put("lat", "31.874744");
             params.put("lng", "118.833842");
-            params.put("name", name.getText().toString().trim());
+//            params.put("name", name.getText().toString().trim());
             params.put("phone", phone.getText().toString().trim());
-            params.put("identitycrad", identitycrad.getText().toString().trim());
+//            params.put("identitycrad", identitycrad.getText().toString().trim());
             params.put("type", type);
-            params.put("address", address);
-            params.put("unitCode","");
+            params.put("address", "三棱科技2应急柜位置");
+            params.put("unitCode", "");
             params.put("username", "admin");
             params.put("platformkey", "app_firecontrol_owner");
             RequestUtils.ClientPost(URLs.CryForHelp_URL, params, new NetCallBack() {
@@ -150,9 +150,9 @@ public class SosDialog extends Dialog implements View.OnClickListener {
                         JSONObject JSONObject = new JSONObject(result);
                         String msg = JSONObject.getString("msg");
                         if (msg.equals("申请成功")) {
-                            SVProgressHUD.showSuccessWithStatus(context,"发送成功");
+                            SVProgressHUD.showSuccessWithStatus(context, "求救成功");
                         } else {
-                            SVProgressHUD.showErrorWithStatus(context,msg);
+                            SVProgressHUD.showErrorWithStatus(context, msg);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -161,7 +161,7 @@ public class SosDialog extends Dialog implements View.OnClickListener {
 
                 @Override
                 public void onMyFailure(Throwable arg0) {
-                    SVProgressHUD.showErrorWithStatus(context,"物资信息加载失败");
+                    SVProgressHUD.showErrorWithStatus(context, "求救失败");
                 }
             });
         }

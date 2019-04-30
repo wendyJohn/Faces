@@ -63,6 +63,10 @@ public class LivenessSettingActivity extends Activity implements View.OnClickLis
         int cameraType = PreferencesUtil.getInt(GlobalSet.TYPE_CAMERA, GlobalSet.ORBBEC);
         defaultLiveness(livenessType);
         defaultCamera(cameraType);
+
+        PreferencesUtil.putInt(TYPE_LIVENSS, TYPE_RGB_DEPTH_LIVENSS);
+        PreferencesUtil.putInt(GlobalSet.TYPE_CAMERA, GlobalSet.ORBBECATLAS);
+
     }
 
     @SuppressLint("WrongViewCast")

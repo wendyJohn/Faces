@@ -525,6 +525,11 @@ public class OrbbecProLivenessDetectActivity extends Activity implements OpenNIH
         showAlertAndExit("Open Device failed: " + msg);
     }
 
+    @Override
+    public void onDeviceNotFound() {
+
+    }
+
     void startThread() {
         initOk = true;
         thread = new Thread() {

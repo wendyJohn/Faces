@@ -8,19 +8,30 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.aip.manager.FaceSDKManager;
+import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
 import com.example.juicekaaa.fireserver.face.activity.MainsActivity;
+import com.example.juicekaaa.fireserver.face.activity.RegActivity;
+import com.example.juicekaaa.fireserver.face.activity.UserGroupManagerActivity;
+import com.example.juicekaaa.fireserver.utils.DoorPasswordView;
+import com.example.juicekaaa.fireserver.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * 在线帮助界面
  */
-public class Function_help_Activity extends BaseActivity implements View.OnClickListener {
+public class FunctionHelpActivity extends BaseActivity implements View.OnClickListener {
     private TextView back;
     private TextView opening_instructions;
     private TextView sos_instructions;
@@ -29,10 +40,14 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
 
     private ImageView smallprogramses;
     private ImageView materialaccess;
+    private ImageView helpfire;
+    private ImageView helpsos;
 
     static int COUNTS = 5;//点击次数
     static long DURATION = 3 * 1000;//规定有效时间
     long[] mHits = new long[COUNTS];
+    private BottomSheetDialog bottomSheetDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +63,23 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
 
     //初始化
     private void intiView() {
+        EventBus.getDefault().register(this);
         back = findViewById(R.id.back);
         opening_instructions = findViewById(R.id.opening_instructions);
         sos_instructions = findViewById(R.id.sos_instructions);
         common_instructions = findViewById(R.id.common_instructions);
         smallprogram_instructions = findViewById(R.id.smallprogram_instructions);
-
         smallprogramses = findViewById(R.id.smallprogramses);
         materialaccess = findViewById(R.id.materialaccess);
-
+        helpfire = findViewById(R.id.helpfire);
+        helpsos = findViewById(R.id.helpsos);
         back.setOnClickListener(this);
         opening_instructions.setOnClickListener(this);
         sos_instructions.setOnClickListener(this);
         common_instructions.setOnClickListener(this);
         smallprogram_instructions.setOnClickListener(this);
         smallprogramses.setOnClickListener(this);
+
     }
 
 
@@ -77,7 +94,7 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.smallprogramses:
-                fiveClick(2);
+//                fiveClick(2);
                 break;
             //返回
             case R.id.back:
@@ -87,21 +104,30 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
             case R.id.opening_instructions:
                 smallprogramses.setVisibility(View.GONE);
                 materialaccess.setVisibility(View.VISIBLE);
+                helpfire.setVisibility(View.GONE);
+                helpsos.setVisibility(View.GONE);
                 break;
             //SOS
             case R.id.sos_instructions:
                 smallprogramses.setVisibility(View.GONE);
                 materialaccess.setVisibility(View.GONE);
+                helpfire.setVisibility(View.GONE);
+                helpsos.setVisibility(View.VISIBLE);
                 break;
             //常见问题
             case R.id.common_instructions:
                 smallprogramses.setVisibility(View.GONE);
                 materialaccess.setVisibility(View.GONE);
+                helpfire.setVisibility(View.VISIBLE);
+                helpsos.setVisibility(View.GONE);
+//                openPayPasswordDialog();//临时用
                 break;
             //应急小程序
             case R.id.smallprogram_instructions:
                 smallprogramses.setVisibility(View.VISIBLE);
                 materialaccess.setVisibility(View.GONE);
+                helpfire.setVisibility(View.GONE);
+                helpsos.setVisibility(View.GONE);
                 break;
         }
     }
@@ -135,7 +161,7 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Function_help_Activity.this, text, Toast.LENGTH_LONG).show();
+                Toast.makeText(FunctionHelpActivity.this, text, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -157,22 +183,6 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
                         return;
                     }
-//                    FaceSDKManager.getInstance().showActivation(new FaceSDKManager.SdkInitListener() {
-//                        @Override
-//                        public void initStart() {
-//                            toast("开始初始化SDK");
-//                        }
-//
-//                        @Override
-//                        public void initSuccess() {
-//                            toast("SDK初始化成功");
-//                        }
-//
-//                        @Override
-//                        public void initFail(int errorCode, String msg) {
-//                            toast("SDK初始化失败:" + msg);
-//                        }
-//                    });
                     return;
                 }
                 break;
@@ -189,6 +199,61 @@ public class Function_help_Activity extends BaseActivity implements View.OnClick
                 break;
         }
 
+    }
+
+    //密码输入验证注册
+    private void openPayPasswordDialog() {
+        DoorPasswordView doorPasswordView = new DoorPasswordView(this, null);
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(doorPasswordView);
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
+        bottomSheetDialog.show();
+    }
+
+    /**
+     * 接收EventBus返回数据
+     *
+     * @param messageEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void backData(MessageEvent messageEvent) {
+        switch (messageEvent.getTAG()) {
+            case MyApplication.MESSAGE_DISMISS://返回
+                bottomSheetDialog.dismiss();
+                break;
+            case MyApplication.MESSAGE_DOOR:
+                bottomSheetDialog.dismiss();
+                Intent intent = new Intent(this, RegActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    public static byte[] HexToByteArr(String inHex) {
+        int hexlen = inHex.length();
+        byte[] result;
+        if (isOdd(hexlen) == 1) {
+            ++hexlen;
+            result = new byte[hexlen / 2];
+            inHex = "0" + inHex;
+        } else {
+            result = new byte[hexlen / 2];
+        }
+        int j = 0;
+
+        for (int i = 0; i < hexlen; i += 2) {
+            result[j] = HexToByte(inHex.substring(i, i + 2));
+            ++j;
+        }
+        return result;
+    }
+
+    public static int isOdd(int num) {
+        return num & 1;
+    }
+
+    public static byte HexToByte(String inHex) {
+        return (byte) Integer.parseInt(inHex, 16);
     }
 
 }

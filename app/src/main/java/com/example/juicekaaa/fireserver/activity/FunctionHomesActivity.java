@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 
@@ -24,21 +25,21 @@ import java.io.File;
 /**
  * 功能首页
  */
-public class Function_Home_Activity extends BaseActivity implements View.OnClickListener {
+public class FunctionHomesActivity extends BaseActivity implements View.OnClickListener {
 
     private FullVideoView videos;
-    private TextView funtion_material;
-    private TextView funtion_opendoor;
-    private TextView funtion_sos;
-    private TextView funtion_propaganda;
     private TextView online_help;
     private ShimmerTextView myShimmerTextView;
     private Shimmer shimmer;
+    private ImageView materialopening;
+    private ImageView sos;
+    private TextView historicalrecord;
+    private TextView polularscience;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.funtion_home_activity);
+        setContentView(R.layout.funtion_homes_activity);
         intiView();
     }
 
@@ -51,17 +52,16 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     private void intiView() {
         myShimmerTextView = findViewById(R.id.shimmer_tv);
         videos = findViewById(R.id.videos);
-        funtion_material = findViewById(R.id.funtion_material);
-        funtion_opendoor = findViewById(R.id.funtion_opendoor);
-        funtion_sos = findViewById(R.id.funtion_sos);
-        funtion_propaganda = findViewById(R.id.funtion_propaganda);
         online_help = findViewById(R.id.online_help);
-
-        funtion_material.setOnClickListener(this);
-        funtion_opendoor.setOnClickListener(this);
-        funtion_sos.setOnClickListener(this);
-        funtion_propaganda.setOnClickListener(this);
+        materialopening = findViewById(R.id.materialopening);
+        polularscience = findViewById(R.id.polularscience);
+        sos = findViewById(R.id.sos);
+        historicalrecord = findViewById(R.id.historicalrecord);
         online_help.setOnClickListener(this);
+        materialopening.setOnClickListener(this);
+        polularscience.setOnClickListener(this);
+        sos.setOnClickListener(this);
+        historicalrecord.setOnClickListener(this);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     @SuppressLint("ClickableViewAccessibility")
     private void setVideo() {
         videos = findViewById(R.id.videos);
-        MediaController mediaController = new MediaController(Function_Home_Activity.this);
+        MediaController mediaController = new MediaController(FunctionHomesActivity.this);
         mediaController.setVisibility(View.GONE);//隐藏进度条
         videos.setMediaController(mediaController);
         File file = new File(Environment.getExternalStorageDirectory() + "/" + "FireVideo", "1542178640266.mp4");
@@ -88,15 +88,20 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
         videos.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                mediaPlayer.start();
-                mediaPlayer.setLooping(true);
+//                mediaPlayer.start();
+//                mediaPlayer.setLooping(true);
+
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + "FireVideo", "1542178640266.mp4");
+                videos.setVideoPath(file.getAbsolutePath());
+                videos.start();
             }
         });
         videos.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 shimmer.cancel();
-                Intent i = new Intent(Function_Home_Activity.this, MainActivity.class);
+                Intent i = new Intent(FunctionHomesActivity.this, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(i);
                 finish();
                 return false;
@@ -107,33 +112,36 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //物资
-            case R.id.funtion_material:
+            //物资开门
+            case R.id.materialopening:
                 shimmer.cancel();
-                Intent funtion_material = new Intent(Function_Home_Activity.this, Function_Operation_Activity.class);
+                Intent funtion_material = new Intent(FunctionHomesActivity.this, FunctionOperationActivity.class);
                 startActivity(funtion_material);
                 break;
-            //开门
-            case R.id.funtion_opendoor:
-                shimmer.cancel();
-                Intent funtion_opendoor = new Intent(Function_Home_Activity.this, Function_Operation_Activity.class);
-                startActivity(funtion_opendoor);
-                break;
             //SOS
-            case R.id.funtion_sos:
-                SosDialog sosDialog = new SosDialog(Function_Home_Activity.this);
+            case R.id.sos:
+                SosDialog sosDialog = new SosDialog(FunctionHomesActivity.this);
                 sosDialog.show();
                 break;
-            //宣传
-            case R.id.funtion_propaganda:
-
+            //历史记录
+            case R.id.historicalrecord:
+                shimmer.cancel();
+                Intent historicalrecord = new Intent(FunctionHomesActivity.this, Historicalrecord_Activity.class);
+                startActivity(historicalrecord);
                 break;
             //在线帮助
             case R.id.online_help:
                 shimmer.cancel();
-                Intent funtion_help = new Intent(Function_Home_Activity.this, Function_help_Activity.class);
+                Intent funtion_help = new Intent(FunctionHomesActivity.this, FunctionHelpActivity.class);
                 startActivity(funtion_help);
                 break;
+            //消防科普
+            case R.id.polularscience:
+                shimmer.cancel();
+                Intent PolularScience = new Intent(FunctionHomesActivity.this, PolularScienceActivity.class);
+                startActivity(PolularScience);
+                break;
+
         }
     }
 
@@ -150,6 +158,7 @@ public class Function_Home_Activity extends BaseActivity implements View.OnClick
             return super.onKeyDown(keyCode, event);
         }
     }
+
     /**
      * 隐藏虚拟按键，并且全屏
      */

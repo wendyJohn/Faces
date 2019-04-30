@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.example.juicekaaa.fireserver.utils.CrashUtil;
 import com.example.juicekaaa.fireserver.utils.GetMac;
+import com.example.juicekaaa.fireserver.utils.PreferenceUtils;
+import com.example.juicekaaa.fireserver.utils.PreferencesUtil;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -25,12 +27,14 @@ public class MyApplication extends Application {
     public static final int MESSAGE_BANNER = 0x756499;
     public static final int MESSAGE_MATERIAL = 0x756466;
     public static final int TCP_BACK_DATA = 0x213;
-    public static final int MESSAGE_BACK = 0x2199;
+    public static final int MESSAGE_BACK = 0x219911;
+    public static final int MESSAGE_DOOR = 0x2199;
+    public static final int MESSAGE_HISTORRECORD = 0x219988;
+    public static final int MESSAGE_InventoryLocation = 0x2199988;
     public static final int REQUEST_CODE_ASK_PERMISSIONS = 0x1231232;
     public static String MAC = "";
 
     public static boolean isFirst;
-
     public static MyApplication instance;
 
 

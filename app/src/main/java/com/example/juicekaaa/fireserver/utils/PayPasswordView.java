@@ -14,13 +14,9 @@ import android.widget.Toast;
 
 import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.R;
-import com.example.juicekaaa.fireserver.activity.Function_Operation_Activity;
-import com.example.juicekaaa.fireserver.entity.DoorOrder;
-import com.example.juicekaaa.fireserver.net.Acquisition_materials;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PayPasswordView extends LinearLayout implements View.OnClickListener, PasswordEditText.PasswordFullListener {

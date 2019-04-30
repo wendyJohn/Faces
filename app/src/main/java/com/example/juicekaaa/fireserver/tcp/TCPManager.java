@@ -124,7 +124,6 @@ public class TCPManager {
         if (timer == null) {
             timer = new Timer();
         }
-
         if (task == null) {
             task = new TimerTask() {
                 @Override
@@ -153,16 +152,18 @@ public class TCPManager {
         if (task != null) {
             task.cancel();
             task = null;
+            threadStatus = false;
         }
         if (timer != null) {
             timer.purge();
             timer.cancel();
             timer = null;
+            threadStatus = false;
         }
         if (outputStream != null) {
             try {
                 outputStream.close();
-
+                threadStatus = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -171,6 +172,7 @@ public class TCPManager {
         if (inputStream != null) {
             try {
                 inputStream.close();
+                threadStatus = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -179,6 +181,7 @@ public class TCPManager {
         if (dis != null) {
             try {
                 dis.close();
+                threadStatus = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -187,13 +190,14 @@ public class TCPManager {
         if (socket != null) {
             try {
                 socket.close();
-
+                threadStatus = false;
             } catch (IOException e) {
             }
             socket = null;
         }
         if (connectThread != null) {
             connectThread = null;
+            threadStatus = false;
         }
         /*重新初始化socket*/
         if (isReConnect) {
@@ -222,24 +226,11 @@ public class TCPManager {
                                 System.out.println("accept:" + rcvMsg);
                                 EventBus.getDefault().post(new MessageEvent(MyApplication.TCP_BACK_DATA, rcvMsg));
                             }
+                        }else{
+                            threadStatus=false;
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "接收总控数据异常");
-//                        //发现数据接收异常，重启Socket
-//                        stopSocket();
-//                        new Thread() {
-//                            @Override
-//                            public void run() {
-//                                super.run();
-//                                try {
-//                                    Thread.sleep(5000);//休眠5秒
-//                                    releaseSocket();//重启Socket
-//                                } catch (InterruptedException e1) {
-//                                    e1.printStackTrace();
-//                                }
-//                            }
-//                        }.start();
-
                     }
                 }
 
@@ -279,6 +270,7 @@ public class TCPManager {
     public void stopSocket() {
         try {
             socket.close();
+            threadStatus = false;
         } catch (IOException e) {
             e.printStackTrace();
         }

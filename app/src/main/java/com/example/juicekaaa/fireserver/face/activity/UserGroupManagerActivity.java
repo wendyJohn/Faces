@@ -68,7 +68,6 @@ public class UserGroupManagerActivity extends Activity implements View.OnClickLi
             startActivity(intent);
         } else if (v == viewGroupBtn) {
             List<Group> groupList = FaceApi.getInstance().getGroupList(0, 1000);
-
             if (groupList.size() <= 0) {
                 Toast.makeText(this, "还没有分组，请创建分组并添加用户", Toast.LENGTH_SHORT).show();
                 return;
@@ -76,7 +75,6 @@ public class UserGroupManagerActivity extends Activity implements View.OnClickLi
             Intent intent = new Intent(this, GroupListActivity.class);
             startActivity(intent);
         } else if (v == addGroupBtn) {
-
             Intent intent = new Intent(this, AddGroupActivity.class);
             startActivity(intent);
         } else if (v == batchRegBtn) {

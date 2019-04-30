@@ -40,7 +40,7 @@
     <RelativeLayout
         android:id="@+id/rl_dialog_edit"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="160dp"
         android:layout_below="@id/viewa"
         android:layout_centerHorizontal="true" >
 
@@ -49,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
+            android:visibility="gone"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -62,6 +63,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:text="姓名:"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -123,6 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/youtb"
+            android:visibility="gone"
             android:background="@color/white"
             android:orientation="horizontal" >
 

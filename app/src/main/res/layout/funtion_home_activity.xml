@@ -11,20 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/videobackground"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1">
 
         <com.example.juicekaaa.fireserver.utils.FullVideoView
             android:id="@+id/videos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             />
     </LinearLayout>
 
@@ -56,17 +56,17 @@
                 android:layout_height="wrap_content"
                 android:textColor="#A9A9A9"
                 android:typeface="serif"
-                android:textSize="50sp"/>
+                android:textSize="45sp"/>
 
 
         </LinearLayout>
 
         <com.example.juicekaaa.fireserver.utils.SecureView
-            android:layout_width="260dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             />
 
         <LinearLayout
@@ -77,7 +77,7 @@
 
             <TextView
                 android:id="@+id/funtion_material"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
@@ -85,50 +85,49 @@
                 android:background="@drawable/select_function"
                 android:gravity="center"
                 android:text="物资"
-                android:textSize="35sp"
+                android:textSize="30sp"
                 android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/funtion_opendoor"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="45dp"
                 android:background="@drawable/select_function"
                 android:gravity="center"
                 android:text="开门"
-                android:textSize="35sp"
+                android:textSize="30sp"
                 android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/funtion_sos"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="45dp"
                 android:background="@drawable/select_function"
                 android:gravity="center"
                 android:text="SOS"
-                android:textSize="35sp"
+                android:textSize="30sp"
                 android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/funtion_propaganda"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginTop="45dp"
                 android:background="@drawable/select_function"
                 android:gravity="center"
                 android:text="宣传"
-                android:textSize="35sp"
+                android:textSize="30sp"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -138,11 +137,11 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="50dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="26dp"
             android:drawableTop="@drawable/smallprogram"
             android:drawablePadding="10dp"
             android:gravity="center"
-            android:textSize="30sp"
+            android:textSize="26sp"
             android:text="微信小程序"
             android:textColor="@color/white" />
 
@@ -153,12 +152,12 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="50dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="26dp"
             android:drawableLeft="@drawable/help_bicon"
             android:drawablePadding="10dp"
             android:gravity="center"
             android:text="在线帮助"
-            android:textSize="35sp"
+            android:textSize="26sp"
             android:textColor="@color/white" />
     </RelativeLayout>
 </LinearLayout>

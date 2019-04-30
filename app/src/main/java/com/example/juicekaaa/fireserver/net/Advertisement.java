@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.example.juicekaaa.fireserver.MyApplication;
 import com.example.juicekaaa.fireserver.utils.MessageEvent;
+import com.example.juicekaaa.fireserver.utils.PreferenceUtils;
+import com.example.juicekaaa.fireserver.utils.PreferencesUtil;
 import com.loopj.android.http.RequestParams;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +47,6 @@ public class Advertisement {
                         if (result == null || result.length() == 0) {
                             return;
                         }
-                        System.out.println("数据请求成功" + result);
                         try {
                             JSONObject jsonObject = new JSONObject(result);
                             String msg = jsonObject.getString("msg");
@@ -160,6 +162,52 @@ public class Advertisement {
                             messageEvent.setImageTitle(imageTitle);
                             messageEvent.setImageTitles(imageTitles);
                             EventBus.getDefault().post(messageEvent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onMyFailure(Throwable arg0) {
+                    }
+                });
+    }
+
+
+    public static void format(final Context context) {
+        RequestParams params = new RequestParams();
+        params.put("username", "admin");
+        params.put("pageNum", "1");
+        params.put("pageSize", "1");
+        params.put("mac", MyApplication.getMac());
+        params.put("platformkey", "app_firecontrol_owner");
+        RequestUtils.ClientPost(URLs.Format_URL, params,
+                new NetCallBack() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                    }
+
+                    @Override
+                    public void onMySuccess(String result) {
+                        if (result == null || result.length() == 0) {
+                            return;
+                        }
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            String msg = jsonObject.getString("msg");
+                            if (msg.equals("获取成功")) {
+                                String data = jsonObject.getString("data");
+                                JSONObject objects = new JSONObject(data);
+                                String mylist = objects.getString("list");
+                                JSONArray array = new JSONArray(mylist);
+                                JSONObject object;
+                                for (int i = 0; i < array.length(); i++) {
+                                    object = (JSONObject) array.get(i);
+                                    String format = object.optString("format");
+                                    PreferenceUtils.setString(context,"format",format);
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -34,21 +34,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="A柜"
+                    android:layout_marginRight="16dp"
+                    android:text="A"
                     android:textColor="@color/white"
-                    android:textSize="35sp" />
+                    android:textSize="30sp" />
 
-                <ListView
-                    android:id="@+id/a_listview"
+                <GridView
+                    android:id="@+id/a_gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none" />
-
+                    android:layout_marginRight="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:horizontalSpacing="10dp"
+                    android:verticalSpacing="10dp" />
 
                 <CheckBox
                     android:id="@+id/a_checkboxs"
@@ -57,6 +57,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     android:tag="A" />
             </RelativeLayout>
 
@@ -73,20 +75,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="C柜"
+                    android:layout_marginRight="16dp"
+                    android:text="C"
                     android:textColor="@color/white"
-                    android:textSize="35sp" />
+                    android:textSize="30sp" />
 
-                <ListView
-                    android:id="@+id/c_listview"
+                <GridView
+                    android:id="@+id/c_gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none" />
+                    android:horizontalSpacing="10dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="10dp"
+                    android:verticalSpacing="10dp" />
 
                 <CheckBox
                     android:id="@+id/c_checkboxs"
@@ -95,6 +98,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     android:tag="C" />
             </RelativeLayout>
 
@@ -111,21 +116,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="E柜"
+                    android:layout_marginRight="16dp"
+                    android:text="E"
                     android:textColor="@color/white"
-                    android:textSize="35sp" />
+                    android:textSize="30sp" />
 
-                <ListView
-                    android:id="@+id/e_listview"
+                <GridView
+                    android:id="@+id/e_gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none" />
-
+                    android:layout_marginRight="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:horizontalSpacing="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:verticalSpacing="10dp" />
                 <CheckBox
                     android:id="@+id/e_checkboxs"
                     style="@style/CustomCheckBoxTheme"
@@ -133,6 +138,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     android:tag="E" />
             </RelativeLayout>
 
@@ -158,20 +165,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="B柜"
+                    android:layout_marginRight="16dp"
+                    android:text="B"
                     android:textColor="@color/white"
-                    android:textSize="35sp" />
+                    android:textSize="30sp" />
 
-                <ListView
-                    android:id="@+id/b_listview"
+                <GridView
+                    android:id="@+id/b_gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none" />
+                    android:horizontalSpacing="10dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:verticalSpacing="10dp" />
 
                 <CheckBox
                     android:id="@+id/b_checkboxs"
@@ -180,6 +188,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     android:tag="B" />
             </RelativeLayout>
 
@@ -196,20 +206,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="D柜"
+                    android:layout_marginRight="16dp"
+                    android:text="D"
                     android:textColor="@color/white"
-                    android:textSize="35sp" />
+                    android:textSize="30sp" />
 
-                <ListView
-                    android:id="@+id/d_listview"
+                <GridView
+                    android:id="@+id/d_gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none" />
+                    android:horizontalSpacing="10dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:verticalSpacing="10dp" />
 
                 <CheckBox
                     android:id="@+id/d_checkboxs"
@@ -218,6 +229,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     android:tag="D" />
             </RelativeLayout>
 
@@ -234,21 +247,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="F柜"
+                    android:layout_marginRight="16dp"
+                    android:text="F"
                     android:textColor="@color/white"
-                    android:textSize="35sp" />
+                    android:textSize="30sp" />
 
-                <ListView
-                    android:id="@+id/f_listview"
+                <GridView
+                    android:id="@+id/f_gridView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="none" />
-
+                    android:horizontalSpacing="10dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:verticalSpacing="10dp" />
                 <CheckBox
                     android:id="@+id/f_checkboxs"
                     style="@style/CustomCheckBoxTheme"
@@ -256,6 +269,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="6dp"
                     android:tag="F" />
             </RelativeLayout>
         </LinearLayout>
@@ -264,32 +279,32 @@
     <RelativeLayout
         android:id="@+id/linyouta"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
         android:layout_above="@+id/linyoutb"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/item_bicon"
+        android:background="@drawable/items_bicon"
         tools:ignore="Orientation">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="G柜"
+            android:layout_marginRight="20dp"
+            android:text="G"
             android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:textSize="30sp" />
 
-        <ListView
-            android:id="@+id/g_listview"
+        <GridView
+            android:id="@+id/g_gridView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="180dp"
-            android:layout_marginBottom="10dp"
-            android:fadeScrollbars="false"
-            android:scrollbars="none" />
+            android:horizontalSpacing="10dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="6dp"
+            android:verticalSpacing="10dp" />
 
         <CheckBox
             android:id="@+id/g_checkboxs"
@@ -298,6 +313,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="6dp"
             android:tag="G" />
     </RelativeLayout>
 
@@ -309,20 +326,6 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp">
 
-        <TextView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="30dp"
-            android:drawableLeft="@drawable/back_icon"
-            android:drawablePadding="3dp"
-            android:gravity="center"
-            android:text="返回首页"
-            android:textColor="#3be0ef"
-            android:textSize="30sp" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -330,56 +333,49 @@
             android:layout_centerHorizontal="true">
 
             <TextView
-                android:id="@+id/confirm_openings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/select_door"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginRight="10dp"
-                android:paddingBottom="10dp"
-                android:text="密码开门"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-
-            <TextView
                 android:id="@+id/confirm_opening"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/select_door"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/faceopening_icon"
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="人脸开门"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:paddingBottom="10dp" />
+
+            <TextView
+                android:id="@+id/One_key_door"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/onekeydoor_icon"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/One_key_door"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/passwordopen"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="30dp"
-            android:background="@drawable/select_doors"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            android:text="一键开门"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="30sp" />
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linyoutc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -390,56 +386,41 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/material"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/select_function"
+            android:drawableLeft="@drawable/back_icon"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:text="物资"
-            android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:text="返回首页"
+            android:textColor="#3be0ef"
+            android:textSize="26sp" />
 
         <TextView
-            android:id="@+id/opendoor"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/select_function"
+            android:layout_marginRight="120dp"
             android:gravity="center"
-            android:text="开门"
+            android:text="注意!人脸未注册，请点击注册授权"
             android:textColor="@color/white"
-            android:textSize="35sp" />
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/sos"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
+            android:id="@+id/faceregistration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/select_function"
+            android:background="@drawable/faceregistration_icon"
             android:gravity="center"
-            android:text="SOS"
+            android:text="注册"
             android:textColor="@color/white"
-            android:textSize="35sp" />
-
-        <TextView
-            android:id="@+id/propaganda"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="30dp"
-            android:layout_weight="1"
-            android:background="@drawable/select_function"
-            android:gravity="center"
-            android:text="宣传"
-            android:textColor="@color/white"
-            android:textSize="35sp" />
-    </LinearLayout>
+            android:textSize="20sp" />
+    </RelativeLayout>
 
 </RelativeLayout>

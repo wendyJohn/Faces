@@ -1,6 +1,7 @@
 package com.example.juicekaaa.fireserver.utils;
 
 import com.example.juicekaaa.fireserver.net.ArchitectureBean;
+import com.example.juicekaaa.fireserver.net.HistorRecordBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ public class MessageEvent {
     private List<ArchitectureBean> e_list;
     private List<ArchitectureBean> f_list;
     private List<ArchitectureBean> g_list;
+    private List<HistorRecordBean> lists;
+    private byte[] buffer;
 
     public MessageEvent(int TAG) {
         this.TAG = TAG;
@@ -137,5 +140,21 @@ public class MessageEvent {
 
     public void setG_list(List<ArchitectureBean> g_list) {
         this.g_list = g_list;
+    }
+
+    public byte[] getBuffer() {
+        return buffer;
+    }
+
+    public void setBuffer(byte[] buffer) {
+        this.buffer = buffer;
+    }
+
+    public List<HistorRecordBean> getLists() {
+        return lists;
+    }
+
+    public void setLists(List<HistorRecordBean> lists) {
+        this.lists = lists;
     }
 }
